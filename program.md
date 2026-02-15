@@ -1,0 +1,85 @@
+# NSU Program Knowledge Base
+
+## [Program: Computer Science & Engineering]
+- **Degree**: Bachelor of Science (BS) in Computer Science & Engineering
+- **Total Credits Required**: 130
+- **Minimum CGPA**: 2.0
+- **Mandatory GED**: 
+  - ENG102: Introduction to Composition (3 credits)
+  - ENG103: Intermediate Composition (3 credits)
+  - HIS103: Emergence of Bangladesh (3 credits)
+  - PHI101: Introduction to Philosophy (3 credits)
+  - BEN205: Bengali Language and Literature (3 credits)
+  - POL101: Political Science (3 credits)
+  - ECO101: Introduction to Microeconomics (3 credits)
+  - SOC101: Introduction to Sociology (3 credits)
+  - ENV203: Introduction to Geography and Environment (3 credits)
+- **Core Math**: 
+  - MAT116: Pre-calculus (0 credits)
+  - MAT120: Calculus I (3 credits)
+  - MAT125: Linear Algebra (3 credits)
+  - MAT130: Calculus II (3 credits)
+  - MAT250: Calculus III (3 credits)
+  - MAT350: Engineering Mathematics (3 credits)
+  - MAT361: Probability and Statistics (3 credits)
+- **Core Science**:
+  - PHY107: General Physics I (3 credits)
+  - PHY107L: General Physics I Lab (1 credit)
+  - PHY108: General Physics II (3 credits)
+  - PHY108L: General Physics II Lab (1 credit)
+  - CHE101: General Chemistry (3 credits)
+  - CHE101L: General Chemistry Lab (1 credit)
+- **Major Core**: 
+  - CSE115: Programming Language I (4 credits)
+  - CSE115L: Programming Language I Lab (0 credits)
+  - CSE173: Discrete Mathematics (3 credits)
+  - CSE215: Programming Language II (4 credits)
+  - CSE215L: Programming Language II Lab (0 credits)
+  - CSE225: Data Structures and Algorithms (3 credits)
+  - CSE225L: Data Structures and Algorithms Lab (1 credit)
+  - CSE231: Digital Logic Design (3 credits)
+  - CSE231L: Digital Logic Design Lab (1 credit)
+  - CSE311: Database Management Systems (3 credits)
+  - CSE311L: Database Management Systems Lab (1 credit)
+  - CSE323: Operating Systems Design (3 credits)
+  - CSE323L: Operating Systems Design Lab (1 credit)
+  - CSE327: Software Engineering (3 credits)
+  - CSE327L: Software Engineering Lab (1 credit)
+  - CSE331: Microprocessor Interfacing and Embedded Systems (3 credits)
+  - CSE331L: Microprocessor Interfacing and Embedded Systems Lab (1 credit)
+  - CSE332: Computer Organization and Architecture (3 credits)
+  - CSE373: Design and Analysis of Algorithms (3 credits)
+  - CSE425: Concepts of Programming Languages (3 credits)
+  - CSE499: Senior Design Project (3 credits)
+
+## [Program: Business Administration]
+- **Degree**: Bachelor of Business Administration (BBA)
+- **Total Credits Required**: 124
+- **Minimum CGPA**: 2.0
+- **Mandatory GED**: 
+  - ENG102: Introduction to Composition (3 credits)
+  - ENG103: Intermediate Composition (3 credits)
+  - HIS103: Emergence of Bangladesh (3 credits)
+  - PHI101: Introduction to Philosophy (3 credits)
+  - BEN205: Bengali Language and Literature (3 credits)
+  - ENV203: Introduction to Geography and Environment (3 credits)
+  - PSY101: Introduction to Psychology (3 credits)
+- **Core Business**: 
+  - ACT201: Introduction to Financial Accounting (3 credits)
+  - ACT202: Introduction to Managerial Accounting (3 credits)
+  - BUS172: Introduction to Statistics (3 credits)
+  - ECO101: Introduction to Microeconomics (3 credits)
+  - ECO104: Introduction to Macroeconomics (3 credits)
+  - FIN254: Introduction to Financial Management (3 credits)
+  - MGT210: Principles of Management (3 credits)
+  - MGT314: Production and Operations Management (3 credits)
+  - MGT368: Entrepreneurship (3 credits)
+  - MKT202: Principles of Marketing (3 credits)
+  - MIS205: Computer Information Systems (3 credits)
+  - LAW200: Legal Environment of Business (3 credits)
+- **Major Core**: 
+  - BUS101: Introduction to Business (3 credits)
+  - BUS112: Business English (3 credits)
+  - BUS134: Business Comp. (3 credits)
+  - BUS498: Internship (3 credits)
+  - QM212: Business Math (3 credits)
