@@ -3,8 +3,14 @@ import csv
 import sys
 import re
 import argparse
+from style import (
+    GR, RD, YL, CY, BL, DM, RS,
+    H, V, TL, TR, BL2, BR, ML, MR,
+    DH, DV, DTL, DTR, DBL, DBR, DML, DMR,
+    CHK, XMK, WRN, BULL, SLP
+)
 
-# --- Shared Logic from L1/L2 (Simplified for single file portability) ---
+# ── NSU Grading Scale ──────────────────────────────────────────────────────────
 GRADE_POINTS = {
     'A': 4.0, 'A-': 3.7, 'B+': 3.3, 'B': 3.0, 'B-': 2.7,
     'C+': 2.3, 'C': 2.0, 'C-': 1.7, 'D+': 1.3, 'D': 1.0, 'F': 0.0
@@ -127,7 +133,12 @@ def audit_student(transcript_file, requirements):
                 # Assuming transcript is chronological or we process all and keep last?
                 # We'll just overwrite
                 if GRADE_POINTS.get(grade) is not None:
-                    course_history[course] = {'grade': grade, 'credits': credits, 'points': GRADE_POINTS[grade]}
+                    points = GRADE_POINTS[grade]
+                    # NSU Policy: "only the best grade will be used to calculate the CGPA"
+                    # Keep whichever attempt has the higher grade points.
+                    existing = course_history.get(course)
+                    if existing is None or points > existing['points']:
+                        course_history[course] = {'grade': grade, 'credits': credits, 'points': points}
 
     except FileNotFoundError:
         print(f"Error: Transcript '{transcript_file}' not found.")
@@ -137,13 +148,6 @@ def audit_student(transcript_file, requirements):
     # Re-sum credits from passed set to be sure (need credit values for passed courses)
     # We need a map of Course -> Credits to sum accurately for passed courses
     # We can infer credits from the course_history (latest) if passed
-    
-    total_earned_credits = 0.0
-    for course in passed_courses:
-        # If passed, we look up its credit value from history (latest attempt usually has correct credits)
-        curr = course_history.get(course)
-        if curr:
-            total_earned_credits += curr['credits']
     
     # Calculate CGPA
     gpa_points = 0.0
@@ -164,87 +168,147 @@ def audit_student(transcript_file, requirements):
         'Business': []
     }
     
+    equivalent_courses = {'MAT112': 'BUS112', 'BUS112': 'MAT112'}
+    valid_electives = {'ENG102', 'MAT112', 'BUS112'}
+    
+    expanded_passed_courses = set(passed_courses)
+    for c in passed_courses:
+        if c in equivalent_courses:
+            expanded_passed_courses.add(equivalent_courses[c])
+            
     for req in requirements['mandatory_ged']:
-        if req not in passed_courses: missing['GED'].append(req)
+        if req not in expanded_passed_courses: missing['GED'].append(req)
         
     for req in requirements['core_math']:
-        if req not in passed_courses: missing['Math'].append(req)
+        if req not in expanded_passed_courses: missing['Math'].append(req)
 
     for req in requirements['major_core']:
-        if req not in passed_courses: missing['Core'].append(req)
+        if req not in expanded_passed_courses: missing['Core'].append(req)
         
     for req in requirements['core_science']:
-        if req not in passed_courses: missing['Science'].append(req)
+        if req not in expanded_passed_courses: missing['Science'].append(req)
         
     for req in requirements['core_business']:
-        if req not in passed_courses: missing['Business'].append(req)
+        if req not in expanded_passed_courses: missing['Business'].append(req)
+
+    all_reqs = set(
+        requirements['mandatory_ged'] +
+        requirements['core_math'] +
+        requirements['major_core'] +
+        requirements['core_business'] +
+        requirements['core_science']
+    )
+
+    invalid_electives = []
+    total_earned_credits = 0.0
+    
+    for course in passed_courses:
+        is_required = course in all_reqs or (course in equivalent_courses and equivalent_courses[course] in all_reqs)
+        is_valid_elective = course in valid_electives or (course in equivalent_courses and equivalent_courses[course] in valid_electives)
+        
+        curr = course_history.get(course)
+        if curr:
+            if is_required or is_valid_elective:
+                total_earned_credits += curr['credits']
+            else:
+                invalid_electives.append(course)
 
     return {
         'total_earned': total_earned_credits,
         'cgpa': cgpa,
         'missing': missing,
+        'invalid_electives': invalid_electives,
         'passed_courses': passed_courses
     }
 
 def print_report(audit, requirements, program_name):
-    print("=" * 60)
-    print(f"GRADUATION AUDIT REPORT")
-    print(f"Program: {program_name}")
-    print("=" * 60)
-    
-    # SUMMARY
-    req_credits = requirements['total_credits_required']
-    cgpa_ok = audit['cgpa'] >= requirements['min_cgpa']
-    credits_ok = audit['total_earned'] >= req_credits
-    
-    # Check if any missing requirements exist
+    W   = 64   # inner width
+    req = requirements['total_credits_required']
+    min_cgpa   = requirements['min_cgpa']
+    earned     = audit['total_earned']
+    cgpa       = audit['cgpa']
+    cgpa_ok    = cgpa >= min_cgpa
+    credits_ok = earned >= req
     has_missing = any(len(m) > 0 for m in audit['missing'].values())
-    
-    is_eligible = cgpa_ok and credits_ok and not has_missing
-    
-    print(f"Total Credits Required: {req_credits}")
-    print(f"Total Credits Earned:   {audit['total_earned']}")
-    print(f"CGPA:                   {audit['cgpa']:.2f}")
-    print("-" * 60)
-    
-    if is_eligible:
-        print("STATUS: ELIGIBLE FOR GRADUATION")
-    else:
-        print("STATUS: NOT ELIGIBLE FOR GRADUATION")
-    
-    print("\n[Deficiency Details]")
-    
-    if audit['cgpa'] < 2.0:
-        print(f"(!) Probation Status: CGPA is below 2.0")
-        
-    if audit['total_earned'] < req_credits:
-         print(f"(!) Credit Deficiency: Need {req_credits - audit['total_earned']} more credits.")
+    has_invalid = len(audit['invalid_electives']) > 0
+    is_eligible = cgpa_ok and credits_ok and not has_missing and not has_invalid
 
-    # List Missing Courses
+    def cc(val, threshold): return GR if val >= threshold else RD
+
+    # ── Header panel ──────────────────────────────────────────────────────────
+    print()
+    print(f'╔{"═" * W}╗')
+    label = 'GRADUATION AUDIT REPORT'
+    print(f'║  {BL}{CY}{label}{RS}{" " * (W - len(label) - 2)}║')
+    prog_line = f'Program  :  {program_name}'
+    print(f'║  {DM}{prog_line}{RS}{" " * max(0, W - len(prog_line) - 2)}║')
+    print(f'╠{"═" * W}╣')
+
+    # ── Metrics grid ──────────────────────────────────────────────────────────
+    cred_c = cc(earned, req)
+    cgpa_c = cc(cgpa, min_cgpa)
+    cr_str = f'{cred_c}{BL}{earned:.1f}{RS}'
+    cg_str = f'{cgpa_c}{BL}{cgpa:.2f}{RS}'
+    print(f'║  Credits Required : {BL}{req:<8}{RS}  │  Credits Earned : {cr_str}{" " * max(0, 14 - len(f"{earned:.1f}"))}║')
+    print(f'║  Min CGPA         : {BL}{min_cgpa:<8}{RS}  │  CGPA Earned    : {cg_str}{" " * max(0, 14 - len(f"{cgpa:.2f}"))}║')
+    print(f'╠{"═" * W}╣')
+
+    # ── Verdict ───────────────────────────────────────────────────────────────
+    if is_eligible:
+        verdict = '✓   ELIGIBLE FOR GRADUATION'
+        vc = GR
+    else:
+        verdict = '✗   NOT ELIGIBLE FOR GRADUATION'
+        vc = RD
+    pad = W - len(verdict) - 2
+    print(f'║  {vc}{BL}{verdict}{RS}{" " * max(0,pad)}║')
+    print(f'╚{"═" * W}╝')
+
+    if is_eligible:
+        print()
+        return
+
+    # ── Deficiency section ────────────────────────────────────────────────────
+    print(f'\n  {BL}DEFICIENCY REPORT{RS}')
+    print(f'  {"─" * (W - 2)}')
+
+    if not cgpa_ok:
+        msg = f'CGPA {cgpa:.2f} is below the required minimum of {min_cgpa:.2f}'
+        print(f'  {RD}⚠  Probation :{RS}  {msg}')
+
+    if not credits_ok:
+        gap = req - earned
+        print(f'  {YL}⚠  Credits   :{RS}  Need {BL}{gap:.1f}{RS} more credits to reach {req}')
+
+    if has_invalid:
+        print(f'\n  {YL}⊘  Invalid Electives (credits excluded):{RS}')
+        for course in audit['invalid_electives']:
+            print(f'       •  {course}')
+
     categories_map = {
-        'GED': 'General Education',
-        'Math': 'Core Mathematics',
-        'Core': 'Major Core',
-        'Science': 'Core Science',
-        'Business': 'Core Business'
+        'GED':      'General Education',
+        'Math':     'Core Mathematics',
+        'Core':     'Major Core',
+        'Science':  'Core Science',
+        'Business': 'Core Business',
     }
-    
     missing_count = 0
     for cat_key, cat_name in categories_map.items():
         missing_list = audit['missing'].get(cat_key, [])
         if missing_list:
-            print(f"\nMissing {cat_name}:")
+            n = len(missing_list)
+            print(f'\n  {RD}✗  Missing {cat_name}{RS}  ({n} course{"s" if n>1 else ""})')
             for course in missing_list:
-                print(f"  - {course}")
-            missing_count += len(missing_list)
-            
-    if missing_count == 0 and not is_eligible:
-        # If no specific courses missing, but blocked by credits/GPA
-        pass
-    elif missing_count == 0:
-        print("\nAll subject requirements completed.")
+                print(f'       •  {course}')
+            missing_count += n
 
-    print("=" * 60)
+    if missing_count == 0 and not has_invalid:
+        print(f'\n  {GR}✓  All subject requirements satisfied.{RS}')
+
+    print(f'\n  {"─" * (W - 2)}')
+    print()
+
+
 
 def main():
     parser = argparse.ArgumentParser(description="Level 3: Audit & Deficiency Reporter")
@@ -254,10 +318,16 @@ def main():
     
     args = parser.parse_args()
     
-    # Map Acronyms to Full Names
+    # Supported programs (verified from official NSU curriculum pages)
     program_map = {
-        "CSE": "Computer Science & Engineering",
-        "BBA": "Business Administration"
+        "CSE":   "Computer Science & Engineering",
+        "EEE":   "Electrical & Electronic Engineering",
+        "ETE":   "Electronic & Telecom Engineering",
+        "CEE":   "Civil & Environmental Engineering",
+        "ENV":   "Environmental Science & Management",
+        "ENG":   "English",
+        "BBA":   "Business Administration",
+        "ECO":   "Economics",
     }
     
     full_program_name = program_map.get(args.program_name.upper(), args.program_name)

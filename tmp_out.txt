@@ -1,0 +1,19 @@
+============================================================
+GRADUATION AUDIT REPORT
+Program: Computer Science & Engineering
+============================================================
+Total Credits Required: 130
+Total Credits Earned:   104.0
+CGPA:                   3.68
+------------------------------------------------------------
+STATUS: NOT ELIGIBLE FOR GRADUATION
+
+[Deficiency Details]
+(!) Credit Deficiency: Need 26.0 more credits.
+
+(!) Invalid Electives Taken:
+  - CSE445 (Credits not counted towards graduation)
+  - CSE477 (Credits not counted towards graduation)
+
+All subject requirements completed.
+============================================================

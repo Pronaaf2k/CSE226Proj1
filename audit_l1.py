@@ -2,77 +2,108 @@
 import csv
 import sys
 import argparse
+from style import (
+    GR, RD, YL, CY, BL, DM, RS,
+    H, V, TL, TR, BL2, BR, ML, MR, MC, TM, BM,
+    CHK, XMK, WRN, ARW, BULL
+)
 
 def is_passing_grade(grade):
-    """
-    Returns True if the grade is a passing grade.
-    F, W, I, and others are considered non-passing for credit accrual.
-    """
-    failing_grades = ['F', 'W', 'I', 'X']
-    return grade.upper() not in failing_grades
+    return grade.upper() not in ['F', 'W', 'I', 'X']
+
+def status_display(status):
+    icons = {
+        'Counted':          f'{GR}{CHK}{RS}',
+        'Retake (Ignored)': f'{YL}{ARW}{RS}',
+        'Failed':           f'{RD}{XMK}{RS}',
+        'Withdrawn':        f'{YL}~{RS}',
+        'Incomplete':       f'{YL}?{RS}',
+        'Skipped':          f'{DM}-{RS}',
+    }
+    icon = icons.get(status, BULL)
+    return f'{icon} {status}'
+
 
 def calculate_credits(transcript_file):
     passed_courses = set()
-    total_credits = 0
-    
-    print(f"Processing transcript: {transcript_file}")
-    print("-" * 50)
-    print(f"{'Course':<10} | {'Credits':<7} | {'Grade':<5} | {'Status':<10}")
-    print("-" * 50)
+    total_credits  = 0
+    rows_display   = []
 
     try:
         with open(transcript_file, mode='r') as infile:
             reader = csv.DictReader(infile)
-            # Strip whitespace from headers just in case
-            reader.fieldnames = [name.strip() for name in reader.fieldnames]
-            
-            # Sort rows by semester/date if possible to handle retakes chronologically? 
-            # For Level 1, we just need to know if they *eventually* passed. 
-            # A simple set of passed courses is sufficient to avoid double counting.
-            
+            reader.fieldnames = [n.strip() for n in reader.fieldnames]
             entries = list(reader)
-            
-            for row in entries:
-                course_code = row['Course_Code'].strip()
-                try:
-                    credits = float(row['Credits'])
-                except ValueError:
-                    credits = 0.0
-                grade = row['Grade'].strip()
-                
-                status = "Skipped"
-                if is_passing_grade(grade):
-                    if course_code not in passed_courses:
-                        total_credits += credits
-                        passed_courses.add(course_code)
-                        status = "Counted"
-                    else:
-                        status = "Retake (Ignored)"
+
+        for row in entries:
+            course = row['Course_Code'].strip()
+            grade  = row['Grade'].strip()
+            try:    credits = float(row['Credits'])
+            except: credits = 0.0
+
+            if is_passing_grade(grade):
+                if course not in passed_courses:
+                    total_credits += credits
+                    passed_courses.add(course)
+                    status = 'Counted'
                 else:
-                    status = "Failed/Withdrawn"
-                
-                print(f"{course_code:<10} | {credits:<7} | {grade:<5} | {status:<10}")
+                    status = 'Retake (Ignored)'
+            else:
+                g = grade.upper()
+                status = {'W': 'Withdrawn', 'I': 'Incomplete'}.get(g, 'Failed')
+
+            rows_display.append((course, credits, grade, status))
 
     except FileNotFoundError:
-        print(f"Error: File '{transcript_file}' not found.")
-        return
+        print(f'{RD}Error:{RS} File "{transcript_file}" not found.')
+        sys.exit(1)
     except Exception as e:
-        print(f"An error occurred: {e}")
-        return
+        print(f'{RD}Error:{RS} {e}')
+        sys.exit(1)
 
-    print("-" * 50)
-    print(f"Total Valid Earned Credits: {total_credits}")
-    print("-" * 50)
+    # ── Layout constants ───────────────────────────────────────────────
+    W  = 62
+    C1, C2, C3, C4 = 14, 9, 7, 28
+
+    def hl(l, m, r, f=H): print(l + (f+m+f).join([f*C1, f*C2, f*C3, f*C4]) + r)
+
+    # ── Header ────────────────────────────────────────────────────────
+    print()
+    print(f'{TL}{H * W}{TR}')
+    print(f'{V}  {BL}{CY}CREDIT TALLY REPORT{RS}{" " * (W - 21)}{V}')
+    print(f'{V}  {DM}Transcript : {transcript_file}{RS}{" " * max(0, W - 15 - len(transcript_file))}{V}')
+    print(f'{BL2}{H * W}{BR}')
+    print()
+
+    # ── Table header ──────────────────────────────────────────────────
+    hl(TL, TM, TR)
+    print(f'{V} {BL}{"Course":<{C1-1}}{RS}{V} {BL}{"Credits":>{C2-1}}{RS}{V} '
+          f'{BL}{"Grade":<{C3-1}}{RS}{V} {BL}{"Status":<{C4-1}}{RS}{V}')
+    hl(ML, MC, MR)
+
+    # ── Rows ────────────────────────────────────────────────────────
+    for course, credits, grade, status in rows_display:
+        disp    = status_display(status)
+        visible = len(status) + 2
+        pad     = C4 - 1 - visible
+        print(f'{V} {course:<{C1-1}}{V} {credits:>{C2-1}.1f}{V} {grade:<{C3-1}}{V} {disp}{" " * max(0,pad)}{V}')
+
+    # ── Footer ────────────────────────────────────────────────────────
+    hl(ML, BM, MR)
+    credit_str = f'{BL}{GR}{total_credits:.1f}{RS}'
+    label      = f'  {CHK}  Total Valid Earned Credits : '
+    pad        = W - len(label) - len(f'{total_credits:.1f}')
+    print(f'{V}{label}{credit_str}{" " * max(0,pad)}{V}')
+    print(f'{BL2}{H * W}{BR}')
+    print()
+
 
 def main():
-    parser = argparse.ArgumentParser(description="Level 1: Credit Tally Engine")
-    parser.add_argument('transcript', help="Path to transcript CSV file")
-    # Arguments below are placeholders for standard invocation format but not used in Level 1 logic per se
-    parser.add_argument('program_name', nargs='?', help="Name of the program (e.g., CSE)") 
-    parser.add_argument('program_knowledge', nargs='?', help="Path to program knowledge file (e.g., program.md)")
-    
+    parser = argparse.ArgumentParser(description='Level 1: Credit Tally Engine')
+    parser.add_argument('transcript',       help='Path to transcript CSV file')
+    parser.add_argument('program_name',     nargs='?', help='Program name (unused at L1)')
+    parser.add_argument('program_knowledge',nargs='?', help='Program knowledge file (unused at L1)')
     args = parser.parse_args()
-    
     calculate_credits(args.transcript)
 
 if __name__ == '__main__':

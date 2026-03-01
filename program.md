@@ -1,20 +1,21 @@
 # NSU Program Knowledge Base
+# Supported Programs (verified from official NSU curriculum pages)
 
 ## [Program: Computer Science & Engineering]
 - **Degree**: Bachelor of Science (BS) in Computer Science & Engineering
 - **Total Credits Required**: 130
 - **Minimum CGPA**: 2.0
-- **Mandatory GED**: 
+- **Mandatory GED**:
   - ENG102: Introduction to Composition (3 credits)
   - ENG103: Intermediate Composition (3 credits)
   - HIS103: Emergence of Bangladesh (3 credits)
   - PHI101: Introduction to Philosophy (3 credits)
   - BEN205: Bengali Language and Literature (3 credits)
-  - POL101: Political Science (3 credits)
+  - POL101: Introduction to Political Science (3 credits)
   - ECO101: Introduction to Microeconomics (3 credits)
   - SOC101: Introduction to Sociology (3 credits)
   - ENV203: Introduction to Geography and Environment (3 credits)
-- **Core Math**: 
+- **Core Math**:
   - MAT116: Pre-calculus (0 credits)
   - MAT120: Calculus I (3 credits)
   - MAT125: Linear Algebra (3 credits)
@@ -29,7 +30,7 @@
   - PHY108L: General Physics II Lab (1 credit)
   - CHE101: General Chemistry (3 credits)
   - CHE101L: General Chemistry Lab (1 credit)
-- **Major Core**: 
+- **Major Core**:
   - CSE115: Programming Language I (4 credits)
   - CSE115L: Programming Language I Lab (0 credits)
   - CSE173: Discrete Mathematics (3 credits)
@@ -52,11 +53,246 @@
   - CSE425: Concepts of Programming Languages (3 credits)
   - CSE499: Senior Design Project (3 credits)
 
+## [Program: Electrical & Electronic Engineering]
+- **Degree**: Bachelor of Science (BS) in Electrical & Electronic Engineering
+- **Total Credits Required**: 130
+- **Minimum CGPA**: 2.0
+- **Mandatory GED**:
+  - ENG102: Introduction to Composition (3 credits)
+  - ENG103: Intermediate Composition (3 credits)
+  - ENG111: Public Speaking (3 credits)
+  - HIS101: History of Bengal (3 credits)
+  - PHI104: Introduction to Ethics (3 credits)
+  - POL101: Introduction to Political Science (3 credits)
+  - ECO101: Introduction to Microeconomics (3 credits)
+  - ENV203: Introduction to Geography and Environment (3 credits)
+- **Core Math**:
+  - MAT116: Pre-calculus (0 credits)
+  - MAT120: Calculus I (3 credits)
+  - MAT125: Linear Algebra (3 credits)
+  - MAT130: Calculus II (3 credits)
+  - MAT250: Calculus III (3 credits)
+  - MAT350: Advanced Mathematics (3 credits)
+  - MAT361: Numerical Methods for Engineers (3 credits)
+- **Core Science**:
+  - PHY107: General Physics I (3 credits)
+  - PHY107L: General Physics I Lab (1 credit)
+  - PHY108: General Physics II (3 credits)
+  - PHY108L: General Physics II Lab (1 credit)
+  - CHE101: General Chemistry (3 credits)
+  - CHE101L: General Chemistry Lab (1 credit)
+  - BIO103: Biology (3 credits)
+- **Major Core**:
+  - CSE115: Programming Language I (3 credits)
+  - CSE115L: Programming Language I Lab (1 credit)
+  - EEE141: Electrical Circuits I (3 credits)
+  - EEE141L: Electrical Circuits I Lab (1 credit)
+  - EEE241: Electrical Circuits II (3 credits)
+  - EEE241L: Electrical Circuits II Lab (1 credit)
+  - EEE111: Analog Electronics I (3 credits)
+  - EEE111L: Analog Electronics I Lab (1 credit)
+  - EEE211: Digital Logic Design (3 credits)
+  - EEE211L: Digital Logic Design Lab (1 credit)
+  - EEE311: Analog Electronics II (3 credits)
+  - EEE311L: Analog Electronics II Lab (1 credit)
+  - EEE221: Signals and Systems (3 credits)
+  - EEE361: Electromagnetic Fields (3 credits)
+  - EEE342: Control Systems (3 credits)
+  - EEE342L: Control Systems Lab (1 credit)
+  - EEE363: Electrical Machines (3 credits)
+  - EEE363L: Electrical Machines Lab (1 credit)
+  - EEE312: Power Electronics (3 credits)
+  - EEE312L: Power Electronics Lab (1 credit)
+  - EEE299: EEE Laboratory (1 credit)
+  - EEE321: Introduction to Communication Systems (3 credits)
+  - EEE321L: Communication Systems Lab (1 credit)
+  - EEE499A: Capstone Project I (3 credits)
+  - EEE499B: Capstone Project II (3 credits)
+
+## [Program: Electronic & Telecom Engineering]
+- **Degree**: Bachelor of Science (BS) in Electronic & Telecom Engineering
+- **Total Credits Required**: 130
+- **Minimum CGPA**: 2.0
+- **Mandatory GED**:
+  - ENG102: Introduction to Composition (3 credits)
+  - ENG103: Intermediate Composition (3 credits)
+  - ENG111: Public Speaking (3 credits)
+  - HIS103: Emergence of Bangladesh (3 credits)
+  - PHI101: Introduction to Philosophy (3 credits)
+  - POL101: Introduction to Political Science (3 credits)
+  - SOC101: Introduction to Sociology (3 credits)
+  - ENV203: Introduction to Geography and Environment (3 credits)
+- **Core Math**:
+  - MAT116: Pre-calculus (0 credits)
+  - MAT120: Calculus I (3 credits)
+  - MAT125: Linear Algebra (3 credits)
+  - MAT130: Calculus II (3 credits)
+  - MAT350: Engineering Mathematics (3 credits)
+  - MAT361: Probability and Statistics (3 credits)
+- **Core Science**:
+  - PHY107: General Physics I (3 credits)
+  - PHY107L: General Physics I Lab (1 credit)
+  - PHY108: General Physics II (3 credits)
+  - PHY108L: General Physics II Lab (1 credit)
+  - CHE101: General Chemistry (3 credits)
+  - CHE101L: General Chemistry Lab (1 credit)
+- **Major Core**:
+  - ETE131: Intro to Telecom and Computer Engineering (3 credits)
+  - ETE131L: Telecom Engineering Lab (1 credit)
+  - ETE132: Computer Programming (3 credits)
+  - ETE132L: Programming Lab (1 credit)
+  - ETE211: Analog Electronics (3 credits)
+  - ETE211L: Analog Electronics Lab (1 credit)
+  - ETE212: Digital Logic Design (3 credits)
+  - ETE212L: Digital Logic Lab (1 credit)
+  - ETE221: Signals and Systems (3 credits)
+  - ETE283: Electrical and Electronics Design Lab I (2 credits)
+  - ETE311: Microprocessors and Microcontrollers (3 credits)
+  - ETE311L: Microprocessors Lab (1 credit)
+  - ETE331: Data Communications and Computer Networks (3 credits)
+  - ETE331L: Data Communications Lab (1 credit)
+  - ETE361: Electromagnetic Fields (3 credits)
+  - ETE381: Electrical and Electronics Design Lab II (2 credits)
+  - ETE423: Principles of Telecommunication Networks (3 credits)
+  - ETE424: Mobile and Wireless Communication Systems (3 credits)
+  - ETE481: Advanced Electronics and Communications Lab I (2 credits)
+  - ETE499A: Senior Design Project I (2 credits)
+  - ETE499B: Senior Design Project II (2 credits)
+
+## [Program: Civil & Environmental Engineering]
+- **Degree**: Bachelor of Science (BS) in Civil & Environmental Engineering
+- **Total Credits Required**: 149
+- **Minimum CGPA**: 2.0
+- **Mandatory GED**:
+  - ENG102: Introduction to Composition (3 credits)
+  - ENG103: Intermediate Composition (3 credits)
+  - HIS103: Emergence of Bangladesh (3 credits)
+  - PHI101: Introduction to Philosophy (3 credits)
+  - POL101: Introduction to Political Science (3 credits)
+  - SOC101: Introduction to Sociology (3 credits)
+  - ENV203: Introduction to Geography and Environment (3 credits)
+- **Core Math**:
+  - MAT116: Pre-calculus (0 credits)
+  - MAT120: Calculus I (3 credits)
+  - MAT125: Linear Algebra (3 credits)
+  - MAT130: Calculus II (3 credits)
+  - MAT250: Calculus III (3 credits)
+  - MAT350: Engineering Mathematics (3 credits)
+  - MAT361: Numerical Methods (3 credits)
+- **Core Science**:
+  - PHY107: General Physics I (3 credits)
+  - PHY107L: General Physics I Lab (1 credit)
+  - PHY108: General Physics II (3 credits)
+  - PHY108L: General Physics II Lab (1 credit)
+  - CHE101: General Chemistry (3 credits)
+  - CHE101L: General Chemistry Lab (1 credit)
+- **Major Core**:
+  - CEE110: Computer Aided Drawing for Engineers (3 credits)
+  - CEE210: Engineering Mechanics (3 credits)
+  - CEE211: Fluid Mechanics (3 credits)
+  - CEE214: Engineering Materials (3 credits)
+  - CEE215: Numerical Analysis and Computer Programming (3 credits)
+  - CEE250: Introduction to Transportation Engineering (3 credits)
+  - CEE311: Structural Analysis I (3 credits)
+  - CEE311L: Structural Analysis I Lab (1 credit)
+  - CEE312: Structural Analysis II (3 credits)
+  - CEE313: Soil Mechanics (3 credits)
+  - CEE313L: Soil Mechanics Lab (1 credit)
+  - CEE314: Hydrology and Water Resources (3 credits)
+  - CEE315: Environmental Engineering (3 credits)
+  - CEE320: Foundation Engineering (3 credits)
+  - CEE330: Reinforced Concrete Design (3 credits)
+  - CEE330L: Reinforced Concrete Design Lab (1 credit)
+  - CEE335: Steel Structure Design (3 credits)
+  - CEE335L: Steel Structure Design Lab (1 credit)
+  - CEE350: Traffic Analysis and Design (3 credits)
+  - CEE360: Construction Management (3 credits)
+  - CEE370: Water Supply and Treatment (3 credits)
+  - CEE410: Advanced Structural Analysis (3 credits)
+  - CEE470: Solid and Hazardous Waste Management (3 credits)
+  - CEE498: Engineering Internship (3 credits)
+  - CEE499: Senior Design Project (3 credits)
+
+## [Program: Environmental Science & Management]
+- **Degree**: Bachelor of Science (BS) in Environmental Science & Management
+- **Total Credits Required**: 130
+- **Minimum CGPA**: 2.0
+- **Mandatory GED**:
+  - ENG103: Intermediate Composition (3 credits)
+  - ENG105: Advanced Composition (3 credits)
+  - HIS103: Emergence of Bangladesh (3 credits)
+  - PHI101: Introduction to Philosophy (3 credits)
+- **Core Math**:
+  - MAT120: Calculus I (3 credits)
+  - ENV172: Introduction to Statistics (3 credits)
+  - ENV173: Applied Statistics (3 credits)
+- **Core Science**:
+  - CHE101: General Chemistry (3 credits)
+  - CHE101L: General Chemistry Lab (1 credit)
+  - BIO103: Biology (3 credits)
+  - BIO103L: Biology Lab (1 credit)
+- **Major Core**:
+  - ENV102: Environmental Biology (3 credits)
+  - ENV107: Introduction to Environmental Science (3 credits)
+  - ENV203: Introduction to Geography (3 credits)
+  - ENV205: Climate Change (3 credits)
+  - ENV207: Environment and Health (3 credits)
+  - ENV208: Environmental Hazards and Disaster Management (3 credits)
+  - ENV209: Environmental Chemistry (3 credits)
+  - ENV214: Environmental Management (3 credits)
+  - ENV215: Ecology (4 credits)
+  - ENV260: Introduction to Environmental and Natural Resource Economics (3 credits)
+  - ENV307: Urban Environmental Management (3 credits)
+  - ENV315: Environmental Ethics (3 credits)
+  - ENV316: Geographical Information Systems (3 credits)
+  - ENV373: Environmental Impact Assessment and Monitoring (3 credits)
+  - ENV375: Biostatistics (3 credits)
+  - ENV405: Population, Poverty and Environment (3 credits)
+  - ENV408: Environmental Pollution Control (3 credits)
+  - ENV409: Environmental Policy, Planning and Politics (3 credits)
+  - ENV410: Integrated Water Resource Planning and Management (3 credits)
+  - ENV414: Waste Management (3 credits)
+  - ENV455: Research Methods (3 credits)
+  - ENV498: Internship (3 credits)
+  - ENV499: Thesis (3 credits)
+
+## [Program: English]
+- **Degree**: Bachelor of Arts (BA) in English
+- **Total Credits Required**: 123
+- **Minimum CGPA**: 2.0
+- **Mandatory GED**:
+  - HIS103: Emergence of Bangladesh (3 credits)
+  - PHI101: Introduction to Philosophy (3 credits)
+  - SOC101: Introduction to Sociology (3 credits)
+  - ENV203: Introduction to Geography and Environment (3 credits)
+  - POL101: Introduction to Political Science (3 credits)
+- **Core Math**:
+  - MIS105: Introduction to Computers (3 credits)
+- **Core Science**:
+  - SCI101: Basic Science (3 credits)
+- **Major Core**:
+  - ENG109: Academic English I (3 credits)
+  - ENG110: Academic English II (3 credits)
+  - ENG111: Public Speaking (3 credits)
+  - ENG115: Introduction to Literature (3 credits)
+  - ENG210: Introduction to Linguistics (3 credits)
+  - ENG220: Introduction to Fiction (3 credits)
+  - ENG230: Introduction to Poetry (3 credits)
+  - ENG260: Literary Theory (3 credits)
+  - ENG311: Advanced Writing (3 credits)
+  - ENG312: Sociolinguistics (3 credits)
+  - ENG321: British Literature I (3 credits)
+  - ENG322: British Literature II (3 credits)
+  - ENG331: American Literature (3 credits)
+  - ENG401: Applied Linguistics (3 credits)
+  - ENG402: Research Methods in English (3 credits)
+  - ENG499: Senior Thesis (3 credits)
+
 ## [Program: Business Administration]
 - **Degree**: Bachelor of Business Administration (BBA)
-- **Total Credits Required**: 124
+- **Total Credits Required**: 120
 - **Minimum CGPA**: 2.0
-- **Mandatory GED**: 
+- **Mandatory GED**:
   - ENG102: Introduction to Composition (3 credits)
   - ENG103: Intermediate Composition (3 credits)
   - HIS103: Emergence of Bangladesh (3 credits)
@@ -64,7 +300,7 @@
   - BEN205: Bengali Language and Literature (3 credits)
   - ENV203: Introduction to Geography and Environment (3 credits)
   - PSY101: Introduction to Psychology (3 credits)
-- **Core Business**: 
+- **Core Business**:
   - ACT201: Introduction to Financial Accounting (3 credits)
   - ACT202: Introduction to Managerial Accounting (3 credits)
   - BUS172: Introduction to Statistics (3 credits)
@@ -77,9 +313,43 @@
   - MKT202: Principles of Marketing (3 credits)
   - MIS205: Computer Information Systems (3 credits)
   - LAW200: Legal Environment of Business (3 credits)
-- **Major Core**: 
+- **Major Core**:
   - BUS101: Introduction to Business (3 credits)
   - BUS112: Business English (3 credits)
-  - BUS134: Business Comp. (3 credits)
-  - BUS498: Internship (3 credits)
+  - BUS134: Business Computing (3 credits)
+  - BUS251: Business Communication (3 credits)
+  - BUS401: Business Ethics (3 credits)
+  - BUS498: Internship (4 credits)
+  - MGT321: Organizational Behavior (3 credits)
+  - MGT489: Strategic Management (3 credits)
   - QM212: Business Math (3 credits)
+
+## [Program: Economics]
+- **Degree**: Bachelor of Science (BS) in Economics
+- **Total Credits Required**: 120
+- **Minimum CGPA**: 2.0
+- **Mandatory GED**:
+  - ENG103: Intermediate Composition (3 credits)
+  - ENG105: Advanced Composition (3 credits)
+  - BEN205: Bengali Language and Literature (3 credits)
+  - HIS103: Emergence of Bangladesh (3 credits)
+  - PHI101: Introduction to Philosophy (3 credits)
+  - POL101: Introduction to Political Science (3 credits)
+- **Core Math**:
+  - MAT125: Introduction to Linear Algebra (3 credits)
+  - ECO172: Introduction to Statistics (3 credits)
+  - ECO173: Applied Statistics (3 credits)
+- **Core Science**:
+  - MIS107: Computer Information Systems (3 credits)
+- **Major Core**:
+  - ECO101: Introduction to Microeconomics (3 credits)
+  - ECO104: Introduction to Macroeconomics (3 credits)
+  - ECO201: Intermediate Microeconomic Theory I (3 credits)
+  - ECO204: Intermediate Macroeconomic Theory I (3 credits)
+  - ECO317: Money, Banking and Financial Markets (3 credits)
+  - ECO328: International Trade Theory and Policy (3 credits)
+  - ECO349: Economy of Bangladesh (3 credits)
+  - ECO354: Environmental and Natural Resources Economics (3 credits)
+  - ECO372: Introduction to Econometrics (3 credits)
+  - ECO414: Public Finance (3 credits)
+  - ECO490: Senior Seminar (3 credits)
