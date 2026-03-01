@@ -7,7 +7,8 @@ from style import (
     GR, RD, YL, CY, BL, DM, RS,
     H, V, TL, TR, BL2, BR, ML, MR, MC, TM, BM,
     DH, DV, DTL, DTR, DBL, DBR, DML, DMR,
-    CHK, XMK, WRN, ARW, BULL, SLP
+    CHK, XMK, WRN, ARW, BULL, SLP,
+    visible_len, pad_row
 )
 
 
@@ -78,25 +79,34 @@ def calculate_cgpa(transcript_file, waivers=None):
     print()
     print(f'╔{"═" * W}╗')
     title = 'SEMESTER-BY-SEMESTER CGPA REPORT'
-    print(f'║  {BL}{CY}{title}{RS}{" " * (W - len(title) - 2)}║')
-    print(f'║  {DM}Transcript : {transcript_file}{RS}{" " * max(0, W - 15 - len(transcript_file))}║')
+    content = f'  {BL}{CY}{title}{RS}'
+    print(pad_row(content, W, '║', '║'))
+    content = f'  {DM}Transcript : {transcript_file}{RS}'
+    print(pad_row(content, W, '║', '║'))
     if waivers:
         wl = f'Waivers    : {", ".join(waivers)}'
-        print(f'║  {DM}{wl}{RS}{" " * max(0, W - 2 - len(wl))}║')
+        content = f'  {DM}{wl}{RS}'
+        print(pad_row(content, W, '║', '║'))
     print(f'╚{"═" * W}╝')
 
     cumulative_best    = {}
     consecutive_prob   = 0
 
+    # Semester card inner width (between the │ borders at indent)
+    SW = W - 2  # subtract 2 for the "  " indent prefix
+
     for sem in sorted_sems:
         rows = semester_rows[sem]
 
         # ── Semester card header ───────────────────────────────────────────────
-        print(f'\n  ┌─ {BL}{sem}{RS} {"─" * max(0, W - len(sem) - 5)}┐')
+        sem_label = f' {BL}{sem}{RS} '
+        sem_vis = visible_len(sem_label)
+        print(f'\n  ┌─{sem_label}{"─" * max(0, SW - sem_vis - 1)}┐')
+
         C1, C2, C3, C4 = 14, 9, 7, 20
-        print(f'  │  {BL}{"Course":<{C1}}{RS} {BL}{"Credits":>{C2}}{RS}  '
-              f'{BL}{"Grade":<{C3}}{RS}  {BL}{"Status":<{C4}}{RS}    │')
-        print(f'  ├{"─" * (W + 2)}┤')
+        header_content = f'  {BL}{"Course":<{C1}}{RS} {BL}{"Credits":>{C2}}{RS}  {BL}{"Grade":<{C3}}{RS}  {BL}{"Status":<{C4}}{RS}'
+        print(pad_row(header_content, SW, '  │', '│'))
+        print(f'  ├{"─" * SW}┤')
 
         sem_pts  = 0.0
         sem_cred = 0.0
@@ -109,21 +119,22 @@ def calculate_cgpa(transcript_file, waivers=None):
 
             if course.upper() in waiver_set:
                 label = status_display('Waived')
-                print(f'  │  {course:<{C1}} {credits:>{C2}.1f}  {grade:<{C3}}  {label:<{C4}}    │')
-                continue
+            else:
+                label  = status_display(grade_status_label(grade))
 
-            label  = status_display(grade_status_label(grade))
-            print(f'  │  {course:<{C1}} {credits:>{C2}.1f}  {grade:<{C3}}  {label}    │')
+            row_content = f'  {course:<{C1}} {credits:>{C2}.1f}  {grade:<{C3}}  {label}'
+            print(pad_row(row_content, SW, '  │', '│'))
 
-            points = get_grade_points(grade)
-            if points is not None and credits > 0:
-                sem_pts  += points * credits
-                sem_cred += credits
+            if course.upper() not in waiver_set:
+                points = get_grade_points(grade)
+                if points is not None and credits > 0:
+                    sem_pts  += points * credits
+                    sem_cred += credits
 
-            if points is not None:
-                ex = cumulative_best.get(course)
-                if ex is None or points > ex['points']:
-                    cumulative_best[course] = {'credits': credits, 'grade': grade, 'points': points}
+                if points is not None:
+                    ex = cumulative_best.get(course)
+                    if ex is None or points > ex['points']:
+                        cumulative_best[course] = {'credits': credits, 'grade': grade, 'points': points}
 
         # ── Compute TGPA and CGPA ──────────────────────────────────────────────
         tgpa = sem_pts / sem_cred if sem_cred > 0 else 0.0
@@ -140,18 +151,20 @@ def calculate_cgpa(transcript_file, waivers=None):
         tc = cgpa_colour(tgpa)
 
         # ── Semester summary bar ───────────────────────────────────────────────
-        print(f'  ├{"─" * (W + 2)}┤')
-        print(f'  │  Sem Credits : {BL}{sem_cred:<5.1f}{RS}  '
-              f'TGPA : {BL}{tc}{tgpa:.2f}{RS}   '
-              f'│   Cumulative CGPA : {BL}{cc}{cgpa:.2f}{RS}{"  " * 4}│')
+        print(f'  ├{"─" * SW}┤')
+        summary_content = (f'  Sem Credits : {BL}{sem_cred:<5.1f}{RS}  '
+                          f'TGPA : {BL}{tc}{tgpa:.2f}{RS}   '
+                          f'│   Cumulative CGPA : {BL}{cc}{cgpa:.2f}{RS}')
+        print(pad_row(summary_content, SW, '  │', '│'))
 
         if consecutive_prob > 0:
             msg = f'⚠  ACADEMIC PROBATION  (semester {consecutive_prob} below 2.00)'
-            print(f'  │  {RD}{BL}{msg}{RS}{" " * max(0, W - len(msg))}│')
+            standing_content = f'  {RD}{BL}{msg}{RS}'
         else:
-            print(f'  │  {GR}✓  Good Standing{RS}{" " * (W - 15)}│')
+            standing_content = f'  {GR}✓  Good Standing{RS}'
+        print(pad_row(standing_content, SW, '  │', '│'))
 
-        print(f'  └{"─" * (W + 2)}┘')
+        print(f'  └{"─" * SW}┘')
 
     # ── Final summary ──────────────────────────────────────────────────────────
     f_pts   = sum(d['points'] * d['credits'] for d in cumulative_best.values() if d['credits'] > 0)
@@ -161,18 +174,23 @@ def calculate_cgpa(transcript_file, waivers=None):
 
     print()
     print(f'╔{"═" * W}╗')
-    print(f'║  {BL}FINAL SUMMARY{RS}{" " * (W - 15)}║')
+    content = f'  {BL}FINAL SUMMARY{RS}'
+    print(pad_row(content, W, '║', '║'))
     print(f'╠{"═" * W}╣')
-    print(f'║  Final CGPA              :  {BL}{fc}{f_cgpa:.2f}{RS}{" " * (W - 32)}║')
-    print(f'║  Total GPA-Bearing Credits :  {BL}{f_creds:.1f}{RS}{" " * (W - 34)}║')
+    content = f'  Final CGPA               :  {BL}{fc}{f_cgpa:.2f}{RS}'
+    print(pad_row(content, W, '║', '║'))
+    content = f'  Total GPA-Bearing Credits :  {BL}{f_creds:.1f}{RS}'
+    print(pad_row(content, W, '║', '║'))
 
     if consecutive_prob > 0:
         msg = f'⚠  Currently on ACADEMIC PROBATION  ({consecutive_prob} consecutive semester(s))'
         print(f'╠{"═" * W}╣')
-        print(f'║  {RD}{BL}{msg}{RS}{" " * max(0, W - 2 - len(msg))}║')
+        content = f'  {RD}{BL}{msg}{RS}'
+        print(pad_row(content, W, '║', '║'))
     else:
         print(f'╠{"═" * W}╣')
-        print(f'║  {GR}✓  Student is in Good Standing{RS}{" " * (W - 32)}║')
+        content = f'  {GR}✓  Student is in Good Standing{RS}'
+        print(pad_row(content, W, '║', '║'))
     print(f'╚{"═" * W}╝')
     print()
 

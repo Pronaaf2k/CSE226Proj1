@@ -51,7 +51,30 @@
   - CSE332: Computer Organization and Architecture (3 credits)
   - CSE373: Design and Analysis of Algorithms (3 credits)
   - CSE425: Concepts of Programming Languages (3 credits)
+  - CSE498R: Research Methodology (0 credits if BIO103L completed, else 1 credit)
   - CSE499: Senior Design Project (3 credits)
+- **Prerequisites**:
+  - CSE215: CSE115
+  - CSE225: CSE215
+  - CSE225L: CSE215
+  - CSE311: CSE225
+  - CSE311L: CSE225
+  - CSE323: CSE225
+  - CSE323L: CSE225
+  - CSE327: CSE225
+  - CSE327L: CSE225
+  - CSE331: CSE231
+  - CSE331L: CSE231
+  - CSE332: CSE231
+  - CSE373: CSE225
+  - CSE425: CSE373
+  - CSE499: CSE327
+  - MAT120: MAT116
+  - MAT130: MAT120
+  - MAT250: MAT130
+  - MAT350: MAT250
+  - PHY108: PHY107
+  - PHY108L: PHY107L
 
 ## [Program: Electrical & Electronic Engineering]
 - **Degree**: Bachelor of Science (BS) in Electrical & Electronic Engineering
@@ -291,6 +314,7 @@
 ## [Program: Business Administration]
 - **Degree**: Bachelor of Business Administration (BBA)
 - **Total Credits Required**: 120
+- **Major Declaration Credits**: 60
 - **Minimum CGPA**: 2.0
 - **Mandatory GED**:
   - ENG102: Introduction to Composition (3 credits)
@@ -323,6 +347,19 @@
   - MGT321: Organizational Behavior (3 credits)
   - MGT489: Strategic Management (3 credits)
   - QM212: Business Math (3 credits)
+- **Prerequisites**:
+  - ACT202: ACT201
+  - ECO104: ECO101
+  - FIN254: ACT201
+  - MGT314: MGT210
+  - MGT321: MGT210
+  - MGT368: MGT210
+  - MGT489: MGT321
+  - MKT202: BUS101
+  - BUS251: BUS112
+  - BUS401: BUS251
+  - BUS498: MGT489
+  - QM212: BUS172
 
 ## [Program: Economics]
 - **Degree**: Bachelor of Science (BS) in Economics

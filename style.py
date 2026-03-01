@@ -3,6 +3,7 @@ style.py — shared terminal styling for NSU Audit Engine
 Automatically uses Unicode box-drawing + ANSI colour when the terminal
 supports it, and falls back to plain ASCII otherwise.
 """
+import re
 import sys
 
 # ── Force UTF-8 output on Windows ─────────────────────────────────────────────
@@ -67,3 +68,15 @@ def banner(title, subtitle=None, w=64):
         lines.append(f'{DV}  {DM}{subtitle}{RS}{" " * max(0, w - len(subtitle) - 2)}{DV}')
     lines.append(hline_double(w, DML, DH, DMR))
     return '\n'.join(lines)
+
+# ── ANSI-aware string helpers ──────────────────────────────────────────────────
+_ANSI_RE = re.compile(r'\033\[[0-9;]*m')
+
+def visible_len(s):
+    """Length of string excluding invisible ANSI escape sequences."""
+    return len(_ANSI_RE.sub('', s))
+
+def pad_row(content, w, left='', right=''):
+    """Return content padded so that visible width equals w, wrapped in left/right."""
+    vl = visible_len(content)
+    return f'{left}{content}{" " * max(0, w - vl)}{right}'

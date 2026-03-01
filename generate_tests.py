@@ -43,7 +43,8 @@ PROGRAMS = {
                  ("CSE215L",0),("CSE225",3),("CSE225L",1),("CSE231",3),
                  ("CSE231L",1),("CSE311",3),("CSE311L",1),("CSE323",3),
                  ("CSE323L",1),("CSE327",3),("CSE327L",1),("CSE331",3),
-                 ("CSE331L",1),("CSE332",3),("CSE373",3),("CSE425",3),("CSE499",3)],
+                 ("CSE331L",1),("CSE332",3),("CSE373",3),("CSE425",3),
+                 ("CSE498R",1),("CSE499",3)],
         "elec": [("CSE445",3),("CSE447",3),("CSE461",3),("CSE471",3),("CSE477",3)],
     },
     "Electrical & Electronic Engineering": {

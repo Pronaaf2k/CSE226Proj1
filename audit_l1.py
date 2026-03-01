@@ -5,7 +5,8 @@ import argparse
 from style import (
     GR, RD, YL, CY, BL, DM, RS,
     H, V, TL, TR, BL2, BR, ML, MR, MC, TM, BM,
-    CHK, XMK, WRN, ARW, BULL
+    CHK, XMK, WRN, ARW, BULL,
+    visible_len, pad_row
 )
 
 def is_passing_grade(grade):
@@ -70,8 +71,10 @@ def calculate_credits(transcript_file):
     # ── Header ────────────────────────────────────────────────────────
     print()
     print(f'{TL}{H * W}{TR}')
-    print(f'{V}  {BL}{CY}CREDIT TALLY REPORT{RS}{" " * (W - 21)}{V}')
-    print(f'{V}  {DM}Transcript : {transcript_file}{RS}{" " * max(0, W - 15 - len(transcript_file))}{V}')
+    content = f'  {BL}{CY}CREDIT TALLY REPORT{RS}'
+    print(pad_row(content, W, V, V))
+    content = f'  {DM}Transcript : {transcript_file}{RS}'
+    print(pad_row(content, W, V, V))
     print(f'{BL2}{H * W}{BR}')
     print()
 
@@ -84,16 +87,17 @@ def calculate_credits(transcript_file):
     # ── Rows ────────────────────────────────────────────────────────
     for course, credits, grade, status in rows_display:
         disp    = status_display(status)
-        visible = len(status) + 2
-        pad     = C4 - 1 - visible
-        print(f'{V} {course:<{C1-1}}{V} {credits:>{C2-1}.1f}{V} {grade:<{C3-1}}{V} {disp}{" " * max(0,pad)}{V}')
+        row_content = f' {course:<{C1-1}}{V} {credits:>{C2-1}.1f}{V} {grade:<{C3-1}}{V} {disp}'
+        vl = visible_len(row_content)
+        total_inner = C1 + C2 + C3 + C4 + 3  # +3 for the 3 inner │ separators
+        pad = total_inner - vl
+        print(f'{V}{row_content}{" " * max(0,pad)}{V}')
 
     # ── Footer ────────────────────────────────────────────────────────
     hl(ML, BM, MR)
     credit_str = f'{BL}{GR}{total_credits:.1f}{RS}'
-    label      = f'  {CHK}  Total Valid Earned Credits : '
-    pad        = W - len(label) - len(f'{total_credits:.1f}')
-    print(f'{V}{label}{credit_str}{" " * max(0,pad)}{V}')
+    content = f'  {CHK}  Total Valid Earned Credits : {credit_str}'
+    print(pad_row(content, W, V, V))
     print(f'{BL2}{H * W}{BR}')
     print()
 
