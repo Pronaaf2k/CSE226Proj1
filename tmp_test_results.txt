@@ -1,0 +1,82 @@
+
+[1m[96m==============================================================[0m
+[1m[96m  NSU Audit System -- Edge Case Test Suite[0m
+[1m[96m==============================================================[0m
+
+  [[92mPASS[0m]  [1m 1/21[0m  L1: Basic credit tally
+  [[92mPASS[0m]  [1m 2/21[0m  L1: Sample transcript
+  [[92mPASS[0m]  [1m 3/21[0m  L1: Retake — original best (A) beats later F
+  [[92mPASS[0m]  [1m 4/21[0m  L1: Retake chain — 3 attempts D→C→B (best=B)
+  [[92mPASS[0m]  [1m 5/21[0m  L2: Retake — best grade kept in CGPA (worst not counted)
+  [[92mPASS[0m]  [1m 6/21[0m  L2: Retake chain — CGPA uses only best (B) attempt
+  [[91mFAIL[0m]  [1m 7/21[0m  L3: Retake worse — course still marked PASSED in audit
+           [91m> SHOULD NOT appear in output: 'NOT ELIGIBLE'[0m
+  [[92mPASS[0m]  [1m 8/21[0m  L3: Retake chain — 3 attempts, course still satisfies requirement
+           [2m> ║  Min CGPA         : 2.0       │  CGPA Earned    : 3.37         ║[0m
+           [2m> ║  ✗   NOT ELIGIBLE FOR GRADUATION                               ║[0m
+  [[92mPASS[0m]  [1m 9/21[0m  L3: Dept switch BBA→CSE — BBA-only courses flagged as invalid electives
+           [2m> ║  Min CGPA         : 2.0       │  CGPA Earned    : 3.57         ║[0m
+           [2m> ║  ✗   NOT ELIGIBLE FOR GRADUATION                               ║[0m
+           [2m> ⊘  Invalid Electives (credits excluded):[0m
+  [[92mPASS[0m]  [1m10/21[0m  L2: Dept switch BBA→CSE — BBA courses still counted in CGPA (GPA is universal)
+  [[92mPASS[0m]  [1m11/21[0m  L3: BBT in CSE — BBT/BIO courses flagged as invalid electives, credits excluded
+           [2m> ║  Min CGPA         : 2.0       │  CGPA Earned    : 3.58         ║[0m
+           [2m> ║  ✗   NOT ELIGIBLE FOR GRADUATION                               ║[0m
+           [2m> ⊘  Invalid Electives (credits excluded):[0m
+           [2m> ADVISORY NOTES[0m
+           [2m> ⚠  Prerequisite violation: CSE225 taken in Spring 2024 without passing CSE215 first[0m
+           [2m> ⚠  Prerequisite violation: CSE225L taken in Spring 2024 without passing CSE215 first[0m
+  [[92mPASS[0m]  [1m12/21[0m  L1: BBT in CSE — BBT courses still counted in L1 credit tally (L1 is program-agnostic)
+  [[92mPASS[0m]  [1m13/21[0m  L2: T-grade — ENG102(T) shown as Waived, excluded from CGPA
+  [[92mPASS[0m]  [1m14/21[0m  L3: T-grade — ENG102(T) satisfies GED requirement (ENG102 not in missing list)
+           [2m> ║  Min CGPA         : 2.0       │  CGPA Earned    : 3.62         ║[0m
+           [2m> ║  ✗   NOT ELIGIBLE FOR GRADUATION                               ║[0m
+  [[91mFAIL[0m]  [1m15/21[0m  L2: CGPA truncation — borderline 1.99x shows as 1.99, not 2.00
+           [91m> MISSING in output: '1.99'[0m
+           [91m> SHOULD NOT appear in output: '2.00'[0m
+  [[91mFAIL[0m]  [1m16/21[0m  L3: CGPA truncation — student with raw ~1.996 CGPA is NOT eligible
+           [91m> SHOULD NOT appear in output: 'ELIGIBLE FOR GRADUATION'[0m
+  [[92mPASS[0m]  [1m17/21[0m  L3: Prerequisite violations flagged in advisory
+           [2m> ║  Min CGPA         : 2.0       │  CGPA Earned    : 3.22         ║[0m
+           [2m> ║  ✗   NOT ELIGIBLE FOR GRADUATION                               ║[0m
+           [2m> ADVISORY NOTES[0m
+           [2m> ⚠  Prerequisite violation: CSE215 taken in Spring 2023 without passing CSE115 first[0m
+  [[92mPASS[0m]  [1m18/21[0m  L3: Invalid course codes flagged as invalid electives
+           [2m> ║  Min CGPA         : 2.0       │  CGPA Earned    : 3.13         ║[0m
+           [2m> ║  ✗   NOT ELIGIBLE FOR GRADUATION                               ║[0m
+           [2m> ⊘  Invalid Electives (credits excluded):[0m
+  [[92mPASS[0m]  [1m19/21[0m  L3: BBA basic audit
+           [2m> ║  Min CGPA         : 2.0       │  CGPA Earned    : 3.10         ║[0m
+           [2m> ║  ✗   NOT ELIGIBLE FOR GRADUATION                               ║[0m
+           [2m> ADVISORY NOTES[0m
+           [2m> ⚠  Major declaration: ACT201 taken in Spring 2023 with only 0 earned credits (major courses require 60 credits first)[0m
+           [2m> ⚠  Major declaration: ECO101 taken in Spring 2023 with only 0 earned credits (major courses require 60 credits first)[0m
+           [2m> ⚠  Major declaration: MGT210 taken in Summer 2023 with only 9 earned credits (major courses require 60 credits first)[0m
+           [2m> ⚠  Prerequisite violation: MKT202 taken in Summer 2023 without passing BUS101 first[0m
+           [2m> ⚠  Major declaration: MKT202 taken in Summer 2023 with only 9 earned credits (major courses require 60 credits first)[0m
+           [2m> ⚠  Major declaration: BUS101 taken in Fall 2023 with only 15 earned credits (major courses require 60 credits first)[0m
+           [2m> ⚠  Major declaration: BUS112 taken in Fall 2023 with only 15 earned credits (major courses require 60 credits first)[0m
+           [2m> ⚠  Major declaration: MIS205 taken in Spring 2024 with only 18 earned credits (major courses require 60 credits first)[0m
+           [2m> ⚠  Major declaration: ACT202 taken in Spring 2024 with only 18 earned credits (major courses require 60 credits first)[0m
+           [2m> ⚠  Prerequisite violation: QM212 taken in Summer 2024 without passing BUS172 first[0m
+           [2m> ⚠  Major declaration: QM212 taken in Summer 2024 with only 21 earned credits (major courses require 60 credits first)[0m
+  [[92mPASS[0m]  [1m20/21[0m  L3: BBA major declaration before 60 credits → advisory fired
+           [2m> ║  Min CGPA         : 2.0       │  CGPA Earned    : 3.37         ║[0m
+           [2m> ║  ✗   NOT ELIGIBLE FOR GRADUATION                               ║[0m
+           [2m> ADVISORY NOTES[0m
+           [2m> ⚠  Major declaration: BUS101 taken in Summer 2023 with only 9 earned credits (major courses require 60 credits first)[0m
+           [2m> ⚠  Major declaration: MGT210 taken in Summer 2023 with only 9 earned credits (major courses require 60 credits first)[0m
+           [2m> ⚠  Major declaration: ACT201 taken in Fall 2023 with only 18 earned credits (major courses require 60 credits first)[0m
+           [2m> ⚠  Major declaration: ECO101 taken in Fall 2023 with only 18 earned credits (major courses require 60 credits first)[0m
+           [2m> ⚠  Major declaration: MKT202 taken in Fall 2023 with only 18 earned credits (major courses require 60 credits first)[0m
+           [2m> ⚠  Major declaration: BUS112 taken in Spring 2024 with only 27 earned credits (major courses require 60 credits first)[0m
+           [2m> ⚠  Major declaration: BUS172 taken in Summer 2024 with only 36 earned credits (major courses require 60 credits first)[0m
+           [2m> ⚠  Major declaration: MIS205 taken in Summer 2024 with only 36 earned credits (major courses require 60 credits first)[0m
+  [[92mPASS[0m]  [1m21/21[0m  L3: Sample transcript (CSE) — runs without error
+           [2m> ║  Min CGPA         : 2.0       │  CGPA Earned    : 2.94         ║[0m
+           [2m> ║  ✗   NOT ELIGIBLE FOR GRADUATION                               ║[0m
+
+[1m--------------------------------------------------------------[0m
+  [91m[1m18/21 tests passed[0m  ([91m3 failed[0m)
+[1m--------------------------------------------------------------[0m
+

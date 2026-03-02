@@ -42,12 +42,14 @@ def grade_status_label(grade):
 
 def status_display(status):
     icons = {
-        'Counted':    f'{GR}✓{RS}',
-        'Withdrawn':  f'{YL}~{RS}',
-        'Incomplete': f'{YL}?{RS}',
-        'Failed':     f'{RD}✗{RS}',
-        'N/A':        f'{DM}–{RS}',
-        'Waived':     f'{CY}⊘{RS}',
+        'Counted':           f'{GR}✓{RS}',
+        'Withdrawn':         f'{YL}~{RS}',
+        'Incomplete':        f'{YL}?{RS}',
+        'Failed':            f'{RD}✗{RS}',
+        'N/A':               f'{DM}–{RS}',
+        'Waived':            f'{CY}⊘{RS}',
+        'Retake (Ignored)':  f'{YL}↩{RS}',
+        'Illegal Retake':    f'{RD}⚠{RS}',
     }
     return f'{icons.get(status,"·")} {status}'
 
@@ -117,30 +119,44 @@ def calculate_cgpa(transcript_file, waivers=None):
             try:    credits = float(row['Credits'])
             except: credits = 0.0
 
-            if course.upper() in waiver_set:
+            # Grade 'T' = Transfer/Admission-test waiver — treated identically to
+            # a user-supplied --waivers code: shown as Waived, excluded from GPA.
+            is_waived = course.upper() in waiver_set or grade.upper() == 'T'
+            if is_waived:
                 label = status_display('Waived')
             else:
-                label  = status_display(grade_status_label(grade))
+                points = get_grade_points(grade)
+                ex = cumulative_best.get(course)
+
+                # ── Retake / illegal-retake labelling (BEFORE printing) ──────
+                if ex is not None:
+                    if ex['points'] >= 3.3:
+                        label = status_display('Illegal Retake')
+                    else:
+                        label = status_display('Retake (Ignored)')
+                else:
+                    label = status_display(grade_status_label(grade))
 
             row_content = f'  {course:<{C1}} {credits:>{C2}.1f}  {grade:<{C3}}  {label}'
             print(pad_row(row_content, SW, '  │', '│'))
 
-            if course.upper() not in waiver_set:
-                points = get_grade_points(grade)
+            if not is_waived:
                 if points is not None and credits > 0:
                     sem_pts  += points * credits
                     sem_cred += credits
 
                 if points is not None:
-                    ex = cumulative_best.get(course)
                     if ex is None or points > ex['points']:
                         cumulative_best[course] = {'credits': credits, 'grade': grade, 'points': points}
 
         # ── Compute TGPA and CGPA ──────────────────────────────────────────────
-        tgpa = sem_pts / sem_cred if sem_cred > 0 else 0.0
+        raw_tgpa = sem_pts / sem_cred if sem_cred > 0 else 0.0
+        # NSU truncation rule: floor to 2 decimal places (1.996 → 1.99, never rounds up)
+        tgpa = int(raw_tgpa * 100) / 100.0
         cgpa_pts   = sum(d['points'] * d['credits'] for d in cumulative_best.values() if d['credits'] > 0)
         cgpa_creds = sum(d['credits']               for d in cumulative_best.values() if d['credits'] > 0)
-        cgpa = cgpa_pts / cgpa_creds if cgpa_creds > 0 else 0.0
+        raw_cgpa = cgpa_pts / cgpa_creds if cgpa_creds > 0 else 0.0
+        cgpa = int(raw_cgpa * 100) / 100.0
 
         if cgpa_creds > 0 and cgpa < 2.0:
             consecutive_prob += 1
@@ -169,7 +185,7 @@ def calculate_cgpa(transcript_file, waivers=None):
     # ── Final summary ──────────────────────────────────────────────────────────
     f_pts   = sum(d['points'] * d['credits'] for d in cumulative_best.values() if d['credits'] > 0)
     f_creds = sum(d['credits']               for d in cumulative_best.values() if d['credits'] > 0)
-    f_cgpa  = f_pts / f_creds if f_creds > 0 else 0.0
+    f_cgpa  = int((f_pts / f_creds) * 100) / 100.0 if f_creds > 0 else 0.0
     fc = cgpa_colour(f_cgpa)
 
     print()

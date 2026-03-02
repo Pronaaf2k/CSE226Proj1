@@ -5,31 +5,27 @@ requirements to determine graduation eligibility, calculate CGPA, and identify d
 
 ---
 
-## Usage
+## 🚀 Quick Start
 
-```bash
-# Level 1 — Credit Tally
-python3 audit_l1.py transcript.csv
-
-# Level 2 — Semester-by-Semester CGPA (interactive waiver prompt)
-python3 audit_l2.py transcript.csv
-python3 audit_l2.py transcript.csv --waivers ENG102,BUS112
-
-# Level 3 — Full Graduation Audit
-python3 audit_l3.py transcript.csv <PROGRAM> program.md
-
-# Run all tests
-python3 run_tests.py
-```
+> **macOS / Linux** — runs natively with beautiful Unicode & colour output:
+> ```bash
+> python3 audit_l3.py transcript.csv CSE program.md
+> python3 run_tests.py
+> ```
+>
+> **Windows PowerShell** — set encoding first, then identical commands:
+> ```powershell
+> $env:PYTHONIOENCODING = 'utf-8'
+> python audit_l3.py transcript.csv CSE program.md
+> python run_tests.py
+> ```
 
 **Program aliases** (use the short code as `<PROGRAM>`):
 
 | Alias | Program |
 |---|---|
 | `CSE` | Computer Science & Engineering |
-| `EEE` | Electrical & Electronic Engineering |
 | `ETE` | Electronic & Telecom Engineering |
-| `CEE` | Civil & Environmental Engineering |
 | `ENV` | Environmental Science & Management |
 | `ENG` | English |
 | `BBA` | Business Administration |
@@ -69,22 +65,33 @@ deficiency, CGPA, and a list of every missing required course by category.
 
 ---
 
-## Running Tests
+## 🧪 Running Tests
 
-```bash
+````bash
+# macOS / Linux
 python3 run_tests.py
-```
-Runs **14 test cases** across all 3 audit levels — invalid courses, prerequisite
-violations, BBA major declaration, worse retakes, and existing edge cases.
 
-## Generating Test Transcripts
+# Windows PowerShell
+$env:PYTHONIOENCODING = 'utf-8'
+python run_tests.py
+````
 
-```bash
-python3 generate_tests.py
-```
-Creates **2000 CSV transcripts** in `test_transcripts/` — ~133 per program,
-covering 14 scenarios: eligible, probation, retakes, withdrawals, missing GED,
-missing core, partial completion, near-graduation, and more.
+Runs **27 test cases** across all 3 audit levels:
+
+| Category | Tests |
+|---|---|
+| Retake logic (best grade kept, illegal B+ retake) | 6 |
+| Dept switch & cross-department free electives | 2 |
+| BBT/BIO invalid courses flagged | 2 |
+| T-grade waiver | 2 |
+| CGPA truncation (floor, not round) | 2 |
+| CSE lab co-registration (0-credit labs) | 2 |
+| Prerequisite violations | 1 |
+| Invalid course codes | 1 |
+| BBA basic audit + major declaration advisory | 2 |
+| CSE graduation (full eligible transcript) | 2 |
+| Elective overload advisory (non-blocking) | 2 |
+| Sanity / sample transcript | 3 |
 
 ---
 
@@ -128,15 +135,15 @@ indicative rather than authoritative:
 | Pharmacy | `PHARM` | Very large programme (199 cr); full course list not scraped |
 | Law (LLB Hons) | `LLB` | Online listing incomplete |
 | Media, Communication & Journalism | `MCJ` | Department established 2022; limited public data |
+| Electrical & Electronic Engineering | `EEE` | Lab credit rules (credit vs non-credit) could not be fully verified |
+| Civil & Environmental Engineering | `CEE` | Lab credit rules (credit vs non-credit) could not be fully verified |
 
 The following programs are **well-sourced** from official NSU pages and academic documents:
 
 | Program | Alias | Source quality |
 |---|---|---|
 | Computer Science & Engineering | `CSE` | ✅ Official curriculum |
-| Electrical & Electronic Engineering | `EEE` | ✅ Official curriculum |
 | Electronic & Telecom Engineering | `ETE` | ✅ Official curriculum |
-| Civil & Environmental Engineering | `CEE` | ✅ Official curriculum |
 | Environmental Science & Management | `ENV` | ✅ Official curriculum |
 | English | `ENG` | ✅ Official curriculum |
 | Business Administration | `BBA` | ✅ Official curriculum |
@@ -146,188 +153,134 @@ The following programs are **well-sourced** from official NSU pages and academic
 
 ## 🎓 Demo Commands
 
-> Copy-paste commands for every supported department and every transcript scenario.
-> All transcript files are in `test_transcripts/`.
-
-### Level 1 — Credit Tally  *(works with any CSV)*
-
-```bash
-python3 audit_l1.py test_transcripts/transcript_CSE_0001_eligible_top.csv
-python3 audit_l1.py test_transcripts/transcript_BBA_1502_missing_ged.csv
-python3 audit_l1.py test_L1.csv
-```
+> All commands are shown in **macOS/Linux** (`python3`) and **Windows PowerShell** (`python`) format.
+> For PowerShell, run `$env:PYTHONIOENCODING = 'utf-8'` once per session before any command.
 
 ---
 
-### Level 2 — Semester CGPA  *(works with any CSV)*
+### Level 1 — Credit Tally
 
-```bash
-# Good standing student
-python3 audit_l2.py test_transcripts/transcript_CSE_0001_eligible_top.csv --waivers=
+````bash
+# macOS / Linux
+python3 audit_l1.py transcript.csv
+python3 audit_l1.py test_L1.csv
 
-# Probation student
-python3 audit_l2.py test_transcripts/transcript_CSE_0009_probation.csv --waivers=
+# Windows PowerShell
+python audit_l1.py transcript.csv
+python audit_l1.py test_L1.csv
+````
 
-# With waiver
-python3 audit_l2.py test_L2.csv --waivers=ENG102,MAT116
-```
+---
+
+### Level 2 — Semester CGPA
+
+````bash
+# macOS / Linux
+python3 audit_l2.py transcript.csv --waivers NONE
+python3 audit_l2.py test_L2.csv --waivers ENG102,MAT116
+python3 audit_l2.py test_cgpa_truncation.csv --waivers NONE   # shows 1.99, not 2.00
+
+# Windows PowerShell
+python audit_l2.py transcript.csv --waivers NONE
+python audit_l2.py test_L2.csv --waivers ENG102,MAT116
+python audit_l2.py test_cgpa_truncation.csv --waivers NONE
+````
 
 ---
 
 ### Level 3 — Full Graduation Audit
 
-> Format: `python3 audit_l3.py <transcript> <DEPT> program.md`
+#### ✅ CSE — Graduation eligible
+````bash
+# macOS / Linux
+python3 audit_l3.py test_grad_CSE.csv CSE program.md
 
-#### 🖥️ Computer Science & Engineering — `CSE`
+# Windows PowerShell
+python audit_l3.py test_grad_CSE.csv CSE program.md
+````
 
-```bash
-# Top student (eligible)
-python3 audit_l3.py test_transcripts/transcript_CSE_0001_eligible_top.csv CSE program.md
+#### ⚠️ CSE — Elective overload (too many free electives, still eligible)
+````bash
+# macOS / Linux
+python3 audit_l3.py test_elective_overflow.csv CSE program.md
 
-# Good student (eligible)
-python3 audit_l3.py test_transcripts/transcript_CSE_0002_eligible_goo.csv CSE program.md
+# Windows PowerShell
+python audit_l3.py test_elective_overflow.csv CSE program.md
+````
 
-# Borderline CGPA
-python3 audit_l3.py test_transcripts/transcript_CSE_0003_eligible_bor.csv CSE program.md
+#### ❌ CSE — CGPA too low (1.99, truncation floor rule)
+````bash
+# macOS / Linux
+python3 audit_l3.py test_cgpa_truncation.csv CSE program.md
 
-# Missing GED courses
-python3 audit_l3.py test_transcripts/transcript_CSE_0004_missing_ged.csv CSE program.md
+# Windows PowerShell
+python audit_l3.py test_cgpa_truncation.csv CSE program.md
+````
 
-# Missing core courses
-python3 audit_l3.py test_transcripts/transcript_CSE_0005_missing_core.csv CSE program.md
+#### ⚠️ CSE — Illegal retake (retook a course with A on record)
+````bash
+# macOS / Linux
+python3 audit_l3.py test_retake_worse.csv CSE program.md
 
-# Retake — passed on second attempt
-python3 audit_l3.py test_transcripts/transcript_CSE_0006_retake_pass.csv CSE program.md
+# Windows PowerShell
+python audit_l3.py test_retake_worse.csv CSE program.md
+````
 
-# Retake — still failing
-python3 audit_l3.py test_transcripts/transcript_CSE_0007_retake_fail.csv CSE program.md
+#### ⚠️ CSE — Lab co-registration violation (CSE225L without CSE225)
+````bash
+# macOS / Linux
+python3 audit_l3.py test_lab_coreq.csv CSE program.md
 
-# Heavy withdrawals
-python3 audit_l3.py test_transcripts/transcript_CSE_0008_withdrawal_h.csv CSE program.md
+# Windows PowerShell
+python audit_l3.py test_lab_coreq.csv CSE program.md
+````
 
-# Academic probation
-python3 audit_l3.py test_transcripts/transcript_CSE_0009_probation.csv CSE program.md
-
-# Probation recovery
-python3 audit_l3.py test_transcripts/transcript_CSE_0010_probation_re.csv CSE program.md
-
-# Partial completion (2-3 semesters)
-python3 audit_l3.py test_transcripts/transcript_CSE_0011_partial.csv CSE program.md
-
-# Near graduation (1-2 courses missing)
-python3 audit_l3.py test_transcripts/transcript_CSE_0012_near_grad.csv CSE program.md
-```
-
-#### ⚡ Electrical & Electronic Engineering — `EEE`
-
-```bash
-python3 audit_l3.py test_transcripts/transcript_EEE_0253_eligible_top.csv EEE program.md
-python3 audit_l3.py test_transcripts/transcript_EEE_0256_missing_ged.csv EEE program.md
-python3 audit_l3.py test_transcripts/transcript_EEE_0257_missing_core.csv EEE program.md
-python3 audit_l3.py test_transcripts/transcript_EEE_0258_retake_pass.csv EEE program.md
-python3 audit_l3.py test_transcripts/transcript_EEE_0259_retake_fail.csv EEE program.md
-python3 audit_l3.py test_transcripts/transcript_EEE_0261_probation.csv EEE program.md
-python3 audit_l3.py test_transcripts/transcript_EEE_0264_near_grad.csv EEE program.md
-```
-
-#### 📡 Electronic & Telecom Engineering — `ETE`
-
-```bash
-python3 audit_l3.py test_transcripts/transcript_ETE_0505_eligible_top.csv ETE program.md
-python3 audit_l3.py test_transcripts/transcript_ETE_0508_missing_ged.csv ETE program.md
-python3 audit_l3.py test_transcripts/transcript_ETE_0509_missing_core.csv ETE program.md
-python3 audit_l3.py test_transcripts/transcript_ETE_0510_retake_pass.csv ETE program.md
-python3 audit_l3.py test_transcripts/transcript_ETE_0513_probation.csv ETE program.md
-python3 audit_l3.py test_transcripts/transcript_ETE_0502_near_grad.csv ETE program.md
-```
-
-#### 🏗️ Civil & Environmental Engineering — `CEE`
-
-```bash
-python3 audit_l3.py test_transcripts/transcript_CEE_0753_eligible_top.csv CEE program.md
-python3 audit_l3.py test_transcripts/transcript_CEE_0756_missing_ged.csv CEE program.md
-python3 audit_l3.py test_transcripts/transcript_CEE_0757_missing_core.csv CEE program.md
-python3 audit_l3.py test_transcripts/transcript_CEE_0758_retake_pass.csv CEE program.md
-python3 audit_l3.py test_transcripts/transcript_CEE_0761_probation.csv CEE program.md
-python3 audit_l3.py test_transcripts/transcript_CEE_0764_near_grad.csv CEE program.md
-```
-
-#### 🌿 Environmental Science & Management — `ENV`
-
-```bash
-python3 audit_l3.py test_transcripts/transcript_ENV_1009_eligible_top.csv ENV program.md
-python3 audit_l3.py test_transcripts/transcript_ENV_1012_missing_ged.csv ENV program.md
-python3 audit_l3.py test_transcripts/transcript_ENV_1013_missing_core.csv ENV program.md
-python3 audit_l3.py test_transcripts/transcript_ENV_1001_retake_fail.csv ENV program.md
-python3 audit_l3.py test_transcripts/transcript_ENV_1014_retake_pass.csv ENV program.md
-python3 audit_l3.py test_transcripts/transcript_ENV_1003_probation.csv ENV program.md
-python3 audit_l3.py test_transcripts/transcript_ENV_1006_near_grad.csv ENV program.md
-```
-
-#### 📖 English — `ENG`
-
-```bash
-python3 audit_l3.py test_transcripts/transcript_ENG_1261_eligible_top.csv ENG program.md
-python3 audit_l3.py test_transcripts/transcript_ENG_1264_missing_ged.csv ENG program.md
-python3 audit_l3.py test_transcripts/transcript_ENG_1251_missing_core.csv ENG program.md
-python3 audit_l3.py test_transcripts/transcript_ENG_1252_retake_pass.csv ENG program.md
-python3 audit_l3.py test_transcripts/transcript_ENG_1255_probation.csv ENG program.md
-python3 audit_l3.py test_transcripts/transcript_ENG_1258_near_grad.csv ENG program.md
-```
-
-#### 💼 Business Administration — `BBA`
-
-```bash
-python3 audit_l3.py test_transcripts/transcript_BBA_1501_eligible_bor.csv BBA program.md
-python3 audit_l3.py test_transcripts/transcript_BBA_1502_missing_ged.csv BBA program.md
-python3 audit_l3.py test_transcripts/transcript_BBA_1503_missing_core.csv BBA program.md
-python3 audit_l3.py test_transcripts/transcript_BBA_1504_retake_pass.csv BBA program.md
-python3 audit_l3.py test_transcripts/transcript_BBA_1507_probation.csv BBA program.md
-python3 audit_l3.py test_transcripts/transcript_BBA_1510_near_grad.csv BBA program.md
-python3 audit_l3.py test_transcripts/transcript_BBA_1737_eligible_top.csv BBA program.md
-```
-
-#### 📊 Economics — `ECO`
-
-```bash
-python3 audit_l3.py test_transcripts/transcript_ECO_1751_eligible_top.csv ECO program.md
-python3 audit_l3.py test_transcripts/transcript_ECO_1754_missing_ged.csv ECO program.md
-python3 audit_l3.py test_transcripts/transcript_ECO_1755_missing_core.csv ECO program.md
-python3 audit_l3.py test_transcripts/transcript_ECO_1756_retake_pass.csv ECO program.md
-python3 audit_l3.py test_transcripts/transcript_ECO_1759_probation.csv ECO program.md
-python3 audit_l3.py test_transcripts/transcript_ECO_1762_near_grad.csv ECO program.md
-```
-
-#### ✨ Special-Purpose Test Files (hand-crafted)
-
-```bash
-# Hand-crafted L3 retake demo (CSE225 + PHI101 fail then pass)
-python3 audit_l3.py test_L3_retake.csv CSE program.md
-
-# BBA-specific edge cases
-python3 audit_l3.py test_BBA.csv BBA program.md
-
-# BBA major declaration before 60 credits
-python3 audit_l3.py test_BBA_major_declaration.csv BBA program.md
-
-# Invalid course codes (ART101, MUS200, DNC150, ZOO999)
-python3 audit_l3.py test_invalid_courses.csv CSE program.md
-
-# Prerequisite violations (CSE215 before CSE115, etc.)
+#### ⚠️ CSE — Prerequisite violations
+````bash
+# macOS / Linux
 python3 audit_l3.py test_prereqs.csv CSE program.md
 
-# Worse retake — best grade should be kept (A→C, B+→C-, A→D+)
-python3 audit_l3.py test_worse_retake.csv CSE program.md
+# Windows PowerShell
+python audit_l3.py test_prereqs.csv CSE program.md
+````
 
-# L1 edge cases (F, W, I, 0-credit, retake)
-python3 audit_l1.py test_L1.csv
+#### ❌ CSE — Invalid course codes (courses not in any NSU program)
+````bash
+# macOS / Linux
+python3 audit_l3.py test_invalid_courses.csv CSE program.md
 
-# L2 edge cases with waiver
-python3 audit_l2.py test_L2.csv --waivers=ENG102
+# Windows PowerShell
+python audit_l3.py test_invalid_courses.csv CSE program.md
+````
 
-# Known sample transcript
-python3 audit_l3.py transcript.csv CSE program.md
-```
+#### ⚠️ BBA — Major declaration before 60 credits
+````bash
+# macOS / Linux
+python3 audit_l3.py test_BBA_major_declaration.csv BBA program.md
+
+# Windows PowerShell
+python audit_l3.py test_BBA_major_declaration.csv BBA program.md
+````
+
+#### ℹ️ T-grade waiver example
+````bash
+# macOS / Linux
+python3 audit_l3.py test_t_grade_waiver.csv CSE program.md
+
+# Windows PowerShell
+python audit_l3.py test_t_grade_waiver.csv CSE program.md
+````
 
 ---
+
+### Run All Tests
+
+````bash
+# macOS / Linux
+python3 run_tests.py
+
+# Windows PowerShell
+$env:PYTHONIOENCODING = 'utf-8'
+python run_tests.py
+````
 

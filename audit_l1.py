@@ -14,12 +14,13 @@ def is_passing_grade(grade):
 
 def status_display(status):
     icons = {
-        'Counted':          f'{GR}{CHK}{RS}',
-        'Retake (Ignored)': f'{YL}{ARW}{RS}',
-        'Failed':           f'{RD}{XMK}{RS}',
-        'Withdrawn':        f'{YL}~{RS}',
-        'Incomplete':       f'{YL}?{RS}',
-        'Skipped':          f'{DM}-{RS}',
+        'Counted':           f'{GR}{CHK}{RS}',
+        'Retake (Ignored)':  f'{YL}{ARW}{RS}',
+        'Illegal Retake':    f'{RD}{WRN}{RS}',
+        'Failed':            f'{RD}{XMK}{RS}',
+        'Withdrawn':         f'{YL}~{RS}',
+        'Incomplete':        f'{YL}?{RS}',
+        'Skipped':           f'{DM}-{RS}',
     }
     icon = icons.get(status, BULL)
     return f'{icon} {status}'
@@ -36,19 +37,32 @@ def calculate_credits(transcript_file):
             reader.fieldnames = [n.strip() for n in reader.fieldnames]
             entries = list(reader)
 
+        GRADE_POINTS = {'A': 4.0, 'A-': 3.7, 'B+': 3.3, 'B': 3.0, 'B-': 2.7,
+                        'C+': 2.3, 'C': 2.0, 'C-': 1.7, 'D+': 1.3, 'D': 1.0, 'F': 0.0}
+        passed_best = {}  # course -> best grade points seen so far
+
         for row in entries:
             course = row['Course_Code'].strip()
             grade  = row['Grade'].strip()
             try:    credits = float(row['Credits'])
             except: credits = 0.0
 
+            pts = GRADE_POINTS.get(grade)
+
             if is_passing_grade(grade):
-                if course not in passed_courses:
+                if course not in passed_best:
                     total_credits += credits
-                    passed_courses.add(course)
+                    passed_best[course] = pts if pts is not None else 0.0
                     status = 'Counted'
                 else:
-                    status = 'Retake (Ignored)'
+                    # Retake — was the previous best B+ (3.3) or higher?
+                    if passed_best[course] >= 3.3:
+                        status = 'Illegal Retake'
+                    else:
+                        status = 'Retake (Ignored)'
+                    # Update best if this attempt is higher
+                    if pts is not None and pts > passed_best[course]:
+                        passed_best[course] = pts
             else:
                 g = grade.upper()
                 status = {'W': 'Withdrawn', 'I': 'Incomplete'}.get(g, 'Failed')
@@ -61,6 +75,7 @@ def calculate_credits(transcript_file):
     except Exception as e:
         print(f'{RD}Error:{RS} {e}')
         sys.exit(1)
+
 
     # ── Layout constants ───────────────────────────────────────────────
     W  = 62

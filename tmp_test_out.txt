@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "F:\Github\CSE226Proj1\run_tests.py", line 258, in <module>
+    main()
+    ~~~~^^
+  File "F:\Github\CSE226Proj1\run_tests.py", line 214, in main
+    print(f"\n{BL}{CY}{'\u2550' * 62}{RS}")
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\benaa\AppData\Local\Python\pythoncore-3.14-64\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode characters in position 11-72: character maps to <undefined>
